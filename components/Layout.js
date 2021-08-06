@@ -33,3 +33,7 @@ export const TextWithBackground = styled.Text(props => `
   align-self: center;
   opacity: ${props.hidden ? 0 : 1};
 `);
+
+export const RightHeaderButtonWrapper = styled.View(props=>`
+  margin-right: ${Platform.OS === 'android' ? 12 : 0}px;
+`)

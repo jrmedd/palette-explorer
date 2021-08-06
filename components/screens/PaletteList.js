@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { LayoutAnimation, UIManager } from 'react-native';
-import { MainContainer, Row, Tile, TextWithBackground, PaletteNameWrapper } from '../Layout';
+import { Button, LayoutAnimation } from 'react-native';
+import { MainContainer, Row, Tile, TextWithBackground, PaletteNameWrapper, RightHeaderButtonWrapper } from '../Layout';
 import { PalettesContext } from '../utils/PalettesContext';
 
 export const PaletteList = ({ navigation, route }) => {
@@ -13,6 +13,15 @@ export const PaletteList = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   }, [pressed]);
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+        headerRight: () => (
+        <RightHeaderButtonWrapper>
+            <Button title="About" onPress={()=> navigation.navigate('About')} />
+        </RightHeaderButtonWrapper>
+        ),
+    });
+    }, [navigation]);
   return (
     <MainContainer>
       {palettes.map((palette, index) => (

@@ -3,12 +3,8 @@ import { Button, Platform, Share, View } from 'react-native';
 import styled from 'styled-components/native';
 import * as Clipboard from 'expo-clipboard';
 import { useToast } from "react-native-toast-notifications";
-import { MainContainer, Row, TextWithBackground } from '../Layout';
+import { MainContainer, Row, TextWithBackground, RightHeaderButtonWrapper } from '../Layout';
 import { PalettesContext } from '../utils/PalettesContext';
-
-const ShareButtonWrapper = styled.View(props=>`
-  margin-right: ${Platform.OS === 'android' ? 12 : 0}px;
-`)
 
 export const ColorList = ({ navigation, route }) => {
   const toast = useToast();
@@ -44,9 +40,9 @@ export const ColorList = ({ navigation, route }) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <ShareButtonWrapper>
+        <RightHeaderButtonWrapper>
           <Button onPress={onShare} title="Share" />
-        </ShareButtonWrapper>
+        </RightHeaderButtonWrapper>
       ),
     });
   }, [navigation]);

@@ -1,17 +1,43 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Platform, Text, View, Pressable, UIManager, StyleSheet } from 'react-native';
+import { Platform, Text, View, Pressable, UIManager, StyleSheet, SectionList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ToastProvider } from 'react-native-toast-notifications'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 import { PalettesProvider } from './components/utils/PalettesContext';
-import { PaletteList } from './components/screens/PaletteList';
+import { About } from './components/screens/About';
 import { ColorList } from './components/screens/ColorList';
+import { PaletteList } from './components/screens/PaletteList';
+import { SettingsList } from './components/screens/SettingsList';
 
 
 
-const Stack = createStackNavigator();
+const PaletteStack = createStackNavigator();
+
+const PalettesScreen = () => (
+  <PaletteStack.Navigator>
+    <PaletteStack.Group>
+      <PaletteStack.Screen name="Palette list" component={PaletteList}></PaletteStack.Screen>
+      <PaletteStack.Screen name="Color list" component={ColorList} options={({route})=>({ title: route.params.paletteName })}></PaletteStack.Screen>
+    </PaletteStack.Group>
+    <PaletteStack.Group screenOptions={{ presentation: 'modal' }}>
+      <PaletteStack.Screen name="About" component={About} />
+    </PaletteStack.Group>
+  </PaletteStack.Navigator>
+)
+const SettingsStack = createStackNavigator();
+
+const SettingsScreen = () => (
+  <SettingsStack.Navigator>
+    <SettingsStack.Screen name="App settings" component={SettingsList} />
+  </SettingsStack.Navigator>
+)
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -27,10 +53,27 @@ export default function App() {
     <PalettesProvider value={palettes}>
       <ToastProvider duration={2000}>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Palette list" component={PaletteList}></Stack.Screen>
-            <Stack.Screen name="Color list" component={ColorList} options={({route})=>({ title: route.params.paletteName })}></Stack.Screen>
-          </Stack.Navigator>
+          <Tab.Navigator screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            switch (route.name) {
+              case 'Palettes':
+                iconName = 'color-palette';
+                break;
+              case 'Settings':
+                iconName = 'cog';
+                break;
+              default:
+                break;
+            }
+            if (!focused) iconName += '-outline'
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          headerShown: false
+        })}>
+           <Tab.Screen name="Palettes" component={PalettesScreen}/>
+           <Tab.Screen name="Settings" component={SettingsScreen} />
+          </Tab.Navigator>
         </NavigationContainer>
       </ToastProvider>
     </PalettesProvider>
