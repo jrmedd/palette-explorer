@@ -43,14 +43,14 @@ export default function App() {
   if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
-  const [palettes, setPalettes] = React.useState([])
+  const [palettes, setPalettes] = React.useState({numberOfColors: '5', paletteData: []})
   React.useEffect(()=>{
-    fetch('https://collision.digital/palettes/5')
+    fetch(`https://collision.digital/palettes/${palettes.numberOfColors}`)
     .then(res=>res.status==200&&res.json())
-    .then(data=>setPalettes(data.palettes))
-  }, [])
+    .then(data=>setPalettes({...palettes, paletteData:data.palettes}))
+  }, [palettes.numberOfColors])
   return(
-    <PalettesProvider value={palettes}>
+    <PalettesProvider value={[palettes, setPalettes]}>
       <ToastProvider duration={2000}>
         <NavigationContainer>
           <Tab.Navigator screenOptions={({ route }) => ({
@@ -79,5 +79,3 @@ export default function App() {
     </PalettesProvider>
   )
 }
-
-

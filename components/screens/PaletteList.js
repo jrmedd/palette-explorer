@@ -4,7 +4,7 @@ import { MainContainer, Row, Tile, TextWithBackground, PaletteNameWrapper, Right
 import { PalettesContext } from '../utils/PalettesContext';
 
 export const PaletteList = ({ navigation, route }) => {
-  const palettes = React.useContext(PalettesContext);
+  const [palettes, setPalettes] = React.useContext(PalettesContext);
   const [visibleColorNames, setVisibleColorNames] = React.useState([]);
   const [pressed, setPressed] = React.useState([]);
   const toggleColors = paletteName => {
@@ -24,7 +24,7 @@ export const PaletteList = ({ navigation, route }) => {
     }, [navigation]);
   return (
     <MainContainer>
-      {palettes.map((palette, index) => (
+      {palettes.paletteData.map((palette, index) => (
         <Row
           onPressIn={() => { setPressed([palette.name, ...pressed]); }}
           onPressOut={() => { setPressed(pressed.filter(item => item !== palette.name)); }}
