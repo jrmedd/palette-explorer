@@ -9,7 +9,7 @@ import { PalettesContext } from '../utils/PalettesContext';
 export const ColorList = ({ navigation, route }) => {
   const toast = useToast();
   const [palettes, setPalettes] = React.useContext(PalettesContext);
-  const currentPalette = palettes.paletteData[route.params.paletteIndex];
+  const [currentPalette, setCurrentPalette] = React.useState(palettes.paletteData[route.params.paletteIndex]);
   const paletteUrl = `https://lospec.com/palette-list/${currentPalette.name.toLowerCase().replace(' ', '-')}`
   const onShare = async () => {
     try {
@@ -39,16 +39,17 @@ export const ColorList = ({ navigation, route }) => {
   }
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      title: currentPalette.name,
       headerRight: () => (
         <RightHeaderButtonWrapper>
           <Button onPress={onShare} title="Share" />
         </RightHeaderButtonWrapper>
       ),
-    });
+    })
   }, [navigation]);
   return (
     <MainContainer>
-      { currentPalette.colors.map(color => <Row onPress={()=>copyToClipboard(color)} key={color} background={color}><TextWithBackground>{color}</TextWithBackground></Row>)}
+      { currentPalette.colors.map(color => <Row accessibilityRole="button" accessibilityLabel={`Color: ${color}`} accessibilityHint="Press to copy this color's hex value to the clipboard" onPress={()=>copyToClipboard(color)} key={color} background={color}><TextWithBackground>{color}</TextWithBackground></Row>)}
     </MainContainer>
   );
 };

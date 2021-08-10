@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components/native";
+import {View, Text, TextInput } from "react-native";
 
 const SettingsRow = styled.Pressable(props => `
   height: 48px;
@@ -20,8 +21,8 @@ const SettingsInput = styled.TextInput(props => `
   font-size: 16px;
 `);
 export const SettingsField = props => (
-  <SettingsRow onPress={props.onPress}>
-    <SettingsLabel>{props.label}</SettingsLabel>
-    <SettingsInput keyboardType={props.keyboardType} value={props.value} onChangeText={props.onChangeText} onEndEditing={props.onEndEditing} ref={props.focusRef} />
+  <SettingsRow onPress={props.onPress} accessible={false}>
+    <SettingsLabel accessible={false}>{props.label}</SettingsLabel>
+    <SettingsInput accessible accessibilityLabel={props.label} keyboardType={props.keyboardType} value={props.value} onChangeText={props.onChangeText} onEndEditing={props.onEndEditing} ref={props.focusRef} />
   </SettingsRow>
 );

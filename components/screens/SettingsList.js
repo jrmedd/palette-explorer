@@ -13,6 +13,7 @@ export const SettingsList = ({navigator, route}) => {
     const focusInput = ()=>numberOfColorsRef.current.focus();
     const [palettes, setPalettes] = React.useContext(PalettesContext);
     const [numberOfColors, setNumberOfColors] = React.useState()
+    const [value, setValue] =React.useState("")
     React.useEffect(()=>setNumberOfColors(palettes.numberOfColors), [palettes])
     const updatePalettes = event => setPalettes({...palettes, numberOfColors: isNaN(parseInt(numberOfColors)) ? palettes.numberOfColors : numberOfColors})
     return (
